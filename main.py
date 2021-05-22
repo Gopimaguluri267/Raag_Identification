@@ -33,10 +33,10 @@ rg = features.RaagAnalysis()
 rp = model.raag_pred()
 cwav = convertWAV.convert()
 
-upload_folder = "C:/Users/Gopi Maguluri/Raag Identification and Understanding/FRIU/static/uploads"
+upload_folder = "/home/ubuntu/raag-identification/Raag_Identification/static/uploads"
 
 app = Flask(__name__)
-app.config['UPLOAD_FOLDER'] = "C:/Users/Gopi Maguluri/Raag Identification and Understanding/FRIU/static/uploads"
+app.config['UPLOAD_FOLDER'] = "/home/ubuntu/raag-identification/Raag_Identification/static/uploads"
 app.config['MAX_CONTENT_LENGTH'] = 20*1024*1024
 app.secret_key = 'gop!'
 
@@ -45,7 +45,7 @@ def allowed_file(filename):
     return '.' in filename and filename.rsplit('.',1)[1].lower() in allowed_extensions
 
 
-@app.route('/home')
+@app.route('/')
 def homescreen():
     return render_template('riu.html')
 
@@ -89,8 +89,8 @@ def export_rec():
 
 @app.route('/predictRec', methods=['POST', 'GET'])
 def predict_recording():
-    rg.MelSpec_Pitch('C:/Users/Gopi Maguluri/Raag Identification and Understanding/FRIU/static/uploads/new_sample.wav')
-    raaga = rp.pred('C:/Users/Gopi Maguluri/Raag Identification and Understanding/FRIU/static/uploads/new_sample.wav')
+    rg.MelSpec_Pitch('/home/ubuntu/raag-identification/Raag_Identification/static/uploads/new_sample.wav')
+    raaga = rp.pred('/home/ubuntu/raag-identification/Raag_Identification/static/uploads/new_sample.wav')
     return render_template('results.html', raaga = raaga)
 
 
@@ -118,4 +118,4 @@ def predict_recording():
 
 
 if __name__=='__main__':
-    app.run(debug=True)
+    app.run(debug=True,port=8500)

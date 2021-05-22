@@ -23,10 +23,11 @@ class raag_pred():
         plt.tight_layout()
 #         t='.jpg'
 #         name=x[:-4]+t
-        plt.savefig('C:/Users/Gopi Maguluri/Raag Identification and Understanding/FRIU/static/intrf/predf.jpg')
-        img = plt.imread('C:/Users/Gopi Maguluri/Raag Identification and Understanding/FRIU/static/intrf/predf.jpg')
+        plt.savefig('/home/ubuntu/raag-identification/Raag_Identification/static/intrf/predf.png')
+        img = plt.imread('/home/ubuntu/raag-identification/Raag_Identification/static/intrf/predf.png')
         data=[]
-        data.append(img)
+        data.append(img[:,:,:3])
+        print(img[:,:,:3].shape,'image shape after png')
         dat = np.array(data)
         
         cnn = Sequential()
@@ -53,7 +54,7 @@ class raag_pred():
         cnn.add(Dropout(0.3))
         cnn.add(Dense(5, activation='softmax'))
         
-        cnn.load_weights('C:/Users/Gopi Maguluri/Raag Identification and Understanding/FRIU/static/intrf/5cls_cnn.hdf5')
+        cnn.load_weights('/home/ubuntu/raag-identification/Raag_Identification/static/intrf/5cls_cnn.hdf5')
         pred = cnn.predict(dat)
         
         p=[]

@@ -24,8 +24,8 @@ class RaagAnalysis():
         # t='.jpg'
         # name=x[:-4]+t
         # name='tempPlot'+t
-        plt.savefig('C:/Users/Gopi Maguluri/Raag Identification and Understanding/FRIU/static/uploads/tempPlot.jpg')
-        img = plt.imread('C:/Users/Gopi Maguluri/Raag Identification and Understanding/FRIU/static/uploads/tempPlot.jpg')
+        plt.savefig('/home/ubuntu/raag-identification/Raag_Identification/static/uploads/tempPlot.png')
+        img = plt.imread('/home/ubuntu/raag-identification/Raag_Identification/static/uploads/tempPlot.png')
         return img
 
 # rg = RaagAnalysis()

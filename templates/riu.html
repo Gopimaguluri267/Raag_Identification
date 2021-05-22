@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Raag Identification</title>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+        <link rel="stylesheet" type="text/css" href="{{url_for('static', filename='styles/upload.css')}}"/>
+
+    </head>
+    
+    <body>
+        <div class="page_head">
+            Raag Identification and Understanding
+        </div>
+
+        <div>
+            {% for msg in get_flashed_messages() %}
+            <h3 class="h3">{{ msg }}</h3>
+            {% endfor %}
+        </div>
+
+        <form action="http://localhost:5000/predictions" method="POST" enctype="multipart/form-data">
+        <div class="title">
+            <h1>Drop file to upload</h1>
+        </div>
+
+        
+        <div class="zupload">
+            <div class="center">
+
+                <div class="sectitle">
+                    Allowed Formats: WAV, MP3
+                </div>
+
+                <div class="dropzone">
+                    <!-- <img src="{{url_for('static', filename='images/upload_icon.png')}}" class="upload-icon" /> -->
+                    <img src="{{url_for('static', filename='images/upload_icon.png')}}" alt="upload" class="upload-icon" />
+                    <input type="file" class="upload-input" name="file" />
+                </div>
+                <div>progress bar need to be added</div>
+        
+                <button type="submit" class="btn" name="uploadbutton">Upload file</button>
+        
+            </div>
+        </div>
+        </form>
+
+        
+        <div class="title2">
+            <h1>Record</h1>
+        </div>
+
+        <div class="zrecord">
+        <div class="center2">
+        <div id="mic">
+            <button id="recButton"><img src="{{url_for('static', filename='images/mic.png')}}" alt="record"></button>
+            <button id="stopButton"><img src="{{url_for('static', filename='images/stop2.png')}}" alt="stop"></button>
+        </div>
+
+        <div class="timer"></div>
+        <br>
+        <div id="audio_player">
+            <audio id="recordedAudio"></audio>
+        </div>
+
+        <div>
+        <form action="http://localhost:5000/exportrec" method="POST" >
+            <input type="button" class="btnUP" id="file_send" value="Upload">
+        </form>
+
+        <form action="http://localhost:5000/predictRec" method="POST" enctype="multipart/form-data">
+            <button type="submit" class="btnPRED" name="uploadbutton">Predict</button>
+        </form>
+        </div>
+
+        </div>
+        </div>
+
+    <script src="{{url_for('static', filename='js/record.js')}}"></script>
+    </body>
+</html>

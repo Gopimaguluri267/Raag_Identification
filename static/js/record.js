@@ -28,7 +28,7 @@ function handlerFunction(stream) {
             e.preventDefault();
             let formdata = new FormData();
             formdata.append("file", blob, "sample.wav");
-            await fetch('https://raag.ssa.sabudh.org/exportrec', {method: 'POST', body:formdata, mode:'no-cors'});
+            await fetch('/exportrec', {method: 'POST', body:formdata, mode:'no-cors'});
         console.log('ccj');
         }
         }

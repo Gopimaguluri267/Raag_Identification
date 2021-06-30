@@ -25,6 +25,7 @@ class raag_pred():
 #         name=x[:-4]+t
         plt.savefig('/home/ubuntu/raag-identification/Raag_Identification/static/intrf/predf.png')
         img = plt.imread('/home/ubuntu/raag-identification/Raag_Identification/static/intrf/predf.png')
+        plt.close('all')
         data=[]
         data.append(img[:,:,:3])
         print(img[:,:,:3].shape,'image shape after png')
@@ -63,5 +64,6 @@ class raag_pred():
         
         labels = {0:'Alahiya Bilaval', 1:'Bhup', 2:'Malkauns', 3:'Miyan Malhar', 4:'Yaman Kalyan'}
         g = p.index(max(p))
+        os.remove('/home/ubuntu/raag-identification/Raag_Identification/static/intrf/predf.jpg')
         return labels[g]
         

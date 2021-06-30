@@ -26,6 +26,7 @@ class RaagAnalysis():
         # name='tempPlot'+t
         plt.savefig('/home/ubuntu/raag-identification/Raag_Identification/static/uploads/tempPlot.png')
         img = plt.imread('/home/ubuntu/raag-identification/Raag_Identification/static/uploads/tempPlot.png')
+        plt.close('all')
         return img
 
 # rg = RaagAnalysis()

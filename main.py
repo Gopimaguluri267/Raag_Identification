@@ -92,8 +92,14 @@ def export_rec():
 def predict_recording():
     rg.MelSpec_Pitch('/home/ubuntu/raag-identification/Raag_Identification/static/uploads/new_sample.wav')
     raaga = rp.pred('/home/ubuntu/raag-identification/Raag_Identification/static/uploads/new_sample.wav')
-    os.remove('/home/ubuntu/raag-identification/Raag_Identification/static/uploads/new_sample.wav')
-    os.remove('/home/ubuntu/raag-identification/Raag_Identification/static/uploads/tempPlot.jpg')
+    try:
+        os.remove('/home/ubuntu/raag-identification/Raag_Identification/static/uploads/new_sample.wav')
+    except:
+        pass
+    try:
+        os.remove('/home/ubuntu/raag-identification/Raag_Identification/static/uploads/tempPlot.jpg')
+    except:
+        pass
     return render_template('results.html', raaga = raaga)
 
 

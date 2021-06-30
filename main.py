@@ -84,13 +84,16 @@ def export_rec():
     filename = secure_filename(file.filename)
     file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
     cwav.to_wav(os.path.join(app.config['UPLOAD_FOLDER'], filename))
-    flash('Recording uploaded successfully. Press predict to get results')
+    if 'file' in request.files:
+        flash('Recording uploaded successfully. Press predict to get results')
     return render_template('riu.html')
 
 @app.route('/predictRec', methods=['POST', 'GET'])
 def predict_recording():
     rg.MelSpec_Pitch('/home/ubuntu/raag-identification/Raag_Identification/static/uploads/new_sample.wav')
     raaga = rp.pred('/home/ubuntu/raag-identification/Raag_Identification/static/uploads/new_sample.wav')
+    os.remove('/home/ubuntu/raag-identification/Raag_Identification/static/uploads/new_sample.wav')
+    os.remove('/home/ubuntu/raag-identification/Raag_Identification/static/uploads/tempPlot.jpg')
     return render_template('results.html', raaga = raaga)
 
 

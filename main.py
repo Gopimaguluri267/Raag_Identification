@@ -10,9 +10,10 @@ from scipy.io.wavfile import write
 # model 
 import numpy as np
 import tensorflow
-from keras.models import Sequential
-from keras.layers import Conv2D, MaxPool2D, Flatten, Dense, InputLayer, BatchNormalization, Dropout, GlobalAveragePooling2D
-from keras.callbacks import ModelCheckpoint
+from tensorflow.keras.models import Sequential
+from tensorflow.keras.layers import Conv2D, MaxPool2D, Flatten, Dense, InputLayer, BatchNormalization, Dropout, GlobalAveragePooling2D
+from tensorflow.keras.callbacks import ModelCheckpoint
+from tensorflow.python.keras.utils import generic_utils
 import os
 import matplotlib.pyplot as plt
 import numpy as np
@@ -38,6 +39,7 @@ upload_folder = "/home/ubuntu/raag-identification/Raag_Identification/static/upl
 app = Flask(__name__)
 app.config['UPLOAD_FOLDER'] = "/home/ubuntu/raag-identification/Raag_Identification/static/uploads"
 app.config['MAX_CONTENT_LENGTH'] = 20*1024*1024
+app.config['SEND_FILE_MAX_AGE_DEFAULT'] = 0
 app.secret_key = 'gop!'
 
 allowed_extensions = set(['wav', 'mp3', 'm4a'])
@@ -47,10 +49,27 @@ def allowed_file(filename):
 
 @app.route('/')
 def homescreen():
+    try:
+        os.remove('/home/ubuntu/raag-identification/Raag_Identification/static/uploads/tempPlot.png')
+    except:
+        pass
+    try:
+        os.remove('/home/ubuntu/raag-identification/Raag_Identification/static/uploads/new_sample.wav')
+    except:
+        pass
+    try:
+        os.remove('/home/ubuntu/raag-identification/Raag_Identification/static/uploads/sample.wav')
+    except:
+        pass
     return render_template('riu.html')
 
 @app.route('/predictions', methods=['POST', 'GET'])
 def file_uploader():
+    try:
+        os.remove('/home/ubuntu/raag-identification/Raag_Identification/static/uploads/tempPlot.png')
+    except:
+        pass
+    
     if 'file' not in request.files:
         flash('No file found')
         return render_template('riu.html')
@@ -80,16 +99,22 @@ def file_uploader():
 
 @app.route('/exportrec', methods=['POST', 'GET'])
 def export_rec():
+    try:
+        os.remove('/home/ubuntu/raag-identification/Raag_Identification/static/uploads/tempPlot.png')
+    except:
+        pass
     file = request.files['file']
     filename = secure_filename(file.filename)
     file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
-    cwav.to_wav(os.path.join(app.config['UPLOAD_FOLDER'], filename))
+#     cwav.to_wav(os.path.join(app.config['UPLOAD_FOLDER'], filename))
     if 'file' in request.files:
         flash('Recording uploaded successfully. Press predict to get results')
+    print("Uploading Done...press Predict")
     return render_template('riu.html')
 
 @app.route('/predictRec', methods=['POST', 'GET'])
 def predict_recording():
+    cwav.to_wav('/home/ubuntu/raag-identification/Raag_Identification/static/uploads/sample.wav')
     rg.MelSpec_Pitch('/home/ubuntu/raag-identification/Raag_Identification/static/uploads/new_sample.wav')
     raaga = rp.pred('/home/ubuntu/raag-identification/Raag_Identification/static/uploads/new_sample.wav')
     try:
@@ -97,10 +122,10 @@ def predict_recording():
     except:
         pass
     try:
-        os.remove('/home/ubuntu/raag-identification/Raag_Identification/static/uploads/tempPlot.jpg')
+        os.remove('/home/ubuntu/raag-identification/Raag_Identification/static/uploads/sample.wav')
     except:
         pass
-    return render_template('results.html', raaga = raaga)
+    return render_template('results.html', raaga = raaga, cache=False)
 
 
 #     try:

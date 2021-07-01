@@ -1,8 +1,9 @@
 import numpy as np
 import tensorflow
-from keras.models import Sequential
-from keras.layers import Conv2D, MaxPool2D, Flatten, Dense, InputLayer, BatchNormalization, Dropout, GlobalAveragePooling2D
-from keras.callbacks import ModelCheckpoint
+from tensorflow.keras.models import Sequential
+from tensorflow.keras.layers import Conv2D, MaxPool2D, Flatten, Dense, InputLayer, BatchNormalization, Dropout, GlobalAveragePooling2D
+from tensorflow.keras.callbacks import ModelCheckpoint
+from tensorflow.python.keras.utils import generic_utils
 import os
 import matplotlib.pyplot as plt
 import numpy as np
@@ -17,7 +18,7 @@ class raag_pred():
         M = librosa.feature.melspectrogram(S=stft)
         M = librosa.feature.melspectrogram(y=samples, sr=sampling_rate, n_mels=128, fmax=8000)
         log_M = librosa.power_to_db(M, ref=np.max)
-        plt.figure(figsize=(7, 6))
+        plt.figure(figsize=(5.04,4.32))
         plt.subplot('211')
         librosa.display.specshow(log_M, y_axis='mel', fmax=8000, x_axis='time')
         plt.tight_layout()

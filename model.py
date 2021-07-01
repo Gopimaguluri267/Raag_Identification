@@ -66,7 +66,7 @@ class raag_pred():
         labels = {0:'Alahiya Bilaval', 1:'Bhup', 2:'Malkauns', 3:'Miyan Malhar', 4:'Yaman Kalyan'}
         g = p.index(max(p))
         try:
-            os.remove('/home/ubuntu/raag-identification/Raag_Identification/static/intrf/predf.jpg')
+            os.remove('/home/ubuntu/raag-identification/Raag_Identification/static/intrf/predf.png')
         except:
             pass
         return labels[g]

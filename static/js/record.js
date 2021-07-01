@@ -35,55 +35,13 @@ function handlerFunction(stream) {
     }
     }
 
-// function sendData(data) {
-//         console.log('fvfvfv');
-//         // var records = document.getElementById('records');
-//         var formSend = document.getElementById('file_send');
-//         // var sent_text = document.getElementById('sent_text').value;
-//         formSend.onclick = async (e) => {
-//         e.preventDefault();
-//         // console.log(records);
-//         // var sent = document.getElementsByClassName(counter)[0];
-//         // if(sent.style.display!='none'){var sent_id = sent.value;}
-//         // console.log('sent_id',sent_id);
-//         // console.log('sent_text',sent_text);
-//         let formdata = new FormData();
-//             formdata.append("file", data, "sample.wav");
-//         //   formdata.append("sentence_id",sent_id);
-//         //   formdata.append('sentence_error',sent_error_check);
-//         //   formdata.append('sentence_text',sent_text);
-//         let response = await fetch('expaudio', {
-//             method: 'POST',
-//             body:formdata
-//         });
-//         let result = await response.json();
-//         if (result.message=='DATA SAVED SUCCESSFULLY'){
-//         hide(counter);
-//         counter = counter + 1;
-//         show(counter);
-//         // document.getElementById('sent_text').value = '';
-//         // console.log(counter, '/', sent_list_length);
-//         send_status.style.background='#008000';
-//         send_status.innerHTML='Audio Sent';
-//             let ffs = document.getElementById('file_send');
-//         ffs.style.display='none';
-//         }else{
-//         send_status.style.background='#ff0000';
-//         send_status.innerHTML=result.message;
-//         }
-//         status_off_timer = new Date().getTime();
-//         t_status = setInterval(remove_status,10);
-//         console.log('uploaded');
-//     };
-//     }
 
 
 $('#recButton').addClass("notRec");
         recButton.onclick = e => {
         if($('#recButton').hasClass('notRec')){
           console.log('REcordingg startedd')
-          // let ffs = document.getElementById('file_send');
-            // ffs.style.display='inline-block';
+          
           audioChunks = [];
           rec.start();
           startTimer();
@@ -107,13 +65,6 @@ $('#stopButton').removeClass("recRun");
 $('#stopButton').addClass("recStop");
 }
 
-
-// function visible_elements(){
-//     record_right_bottom.style.visibility='visible';
-//     data_img.style.visibility='visible';
-//     record_left_bottom_bottom.style.visibility='visible';
-//     mic.style.visibility='visible';
-//     }
 
 
 function getShowTime(){

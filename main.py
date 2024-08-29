@@ -128,28 +128,5 @@ def predict_recording():
     return render_template('results.html', raaga = raaga, cache=False)
 
 
-#     try:
-#         print('Finallyy aage ethee.')
-#         print(request.form)
-#         print(request.files)
-#         if ('file' in request.form):
-#             file = request.files['file']
-#             filename = secure_filename(file.filename)
-#             directory = os.path.join(os.getcwd(), 'temp-data')
-#             # logging.info("[INFO] Object Recognition: Image file passed validations...")
-#             if not os.path.exists(directory):
-#                 os.makedirs(directory)
-#             file_save_path = os.path.join(directory, filename)
-#             file.save(file_save_path)
-#             print('file saved locally')
-#             file_save_path = 'C:/Users/Gopi Maguluri/Raag Identification and Understanding/FRIU/static/uploads'
-#             with open(file_save_path, "rb") as file:
-#                 b_str = base64.b64encode(file.read())
-#             return render_template('riu.html')
-#     except Exception as e:
-#         print('exception logged', e)
-
-
-
 if __name__=='__main__':
     app.run(debug=True,port=8500)

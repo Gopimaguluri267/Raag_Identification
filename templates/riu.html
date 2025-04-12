@@ -18,7 +18,7 @@
             {% endfor %}
         </div>
 
-        <form action="http://localhost:5000/predictions" method="POST" enctype="multipart/form-data">
+        <form action="http://localhost:8000/predictions" method="POST" enctype="multipart/form-data">
         <div class="title">
             <h1>Drop file to upload</h1>
         </div>
@@ -63,14 +63,16 @@
         </div>
 
         <div>
-        <form action="http://localhost:5000/exportrec" method="POST" >
+        <form action="http://localhost:8000/exportrec" method="POST" >
             <input type="button" class="btnUP" id="file_send" value="Upload">
         </form>
 
-        <form action="http://localhost:5000/predictRec" method="POST" enctype="multipart/form-data">
+        <form action="http://localhost:8000/predictRec" method="POST" enctype="multipart/form-data">
             <button type="submit" class="btnPRED" name="uploadbutton">Predict</button>
         </form>
         </div>
+
+        <div>Click Upload and then Predict</div>
 
         </div>
         </div>

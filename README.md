@@ -68,7 +68,7 @@ Visualization → CNN Model → Raag Classification
 
 1. Clone the repository:
    ```
-   git clone <repository-url>
+   git clone https://github.com/Gopimaguluri267/Raag_Identification.git
    cd Raag_Identification
    ```
 

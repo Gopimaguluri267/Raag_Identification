@@ -1,12 +1,24 @@
-flask==1.1.2
-werkzeug==1.0.1
-urllib==1.25.9
-scipy==1.5.0
-numpy==1.18.5
-matplotlib==3.2.2
-librosa==0.8.0
-pydub==0.24.1
-tensorflow==2.3.1
-keras==2.4.3
-praat-parselmouth==0.3.3
+# flask==1.1.2
+# werkzeug==1.0.1
+# urllib==1.25.9
+# scipy==1.5.0
+# numpy==1.18.5
+# matplotlib==3.2.2
+# librosa==0.8.0
+# pydub==0.24.1
+# tensorflow==2.3.1
+# keras==2.4.3
+# praat-parselmouth==0.3.3
 #https://bit.ly/3wqT3f3
+
+flask
+scipy
+numpy
+matplotlib
+librosa
+pydub
+tensorflow
+keras
+# praat-parselmouth==0.3.3
+Pillow
+dotenv

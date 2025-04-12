@@ -9,6 +9,8 @@ import numpy as np
 from matplotlib import image
 import librosa
 import librosa.display
+import config
+from PIL import Image
 
 class raag_pred():
     def pred(self, x):
@@ -17,17 +19,23 @@ class raag_pred():
         M = librosa.feature.melspectrogram(S=stft)
         M = librosa.feature.melspectrogram(y=samples, sr=sampling_rate, n_mels=128, fmax=8000)
         log_M = librosa.power_to_db(M, ref=np.max)
-        plt.figure(figsize=(7, 6))
-        plt.subplot('211')
+        plt.figure(figsize=(4.32, 5.04))
+        plt.subplot(2, 1, 1)
         librosa.display.specshow(log_M, y_axis='mel', fmax=8000, x_axis='time')
         plt.tight_layout()
-#         t='.jpg'
-#         name=x[:-4]+t
-        plt.savefig('C:/Users/Gopi Maguluri/Raag Identification and Understanding/FRIU/static/intrf/predf.jpg')
-        img = plt.imread('C:/Users/Gopi Maguluri/Raag Identification and Understanding/FRIU/static/intrf/predf.jpg')
+        plt.savefig(os.path.join(config.INTERMEDIATE_FILES_FOLDER, 'predf.jpg'), dpi=100, bbox_inches='tight')
+        
+        img_path = os.path.join(config.INTERMEDIATE_FILES_FOLDER, 'predf.jpg')
+        img = Image.open(img_path)
+        img = img.resize((504, 432))
+        img.save(img_path)
+        img = plt.imread(img_path)
+        
         data=[]
         data.append(img)
         dat = np.array(data)
+        
+        print(f"Input shape to model: {dat.shape}")
         
         cnn = Sequential()
         cnn.add(Conv2D(50, kernel_size=(3,3), strides=(3,3), padding='same', activation='relu', input_shape=(432, 504, 3)))
@@ -53,7 +61,7 @@ class raag_pred():
         cnn.add(Dropout(0.3))
         cnn.add(Dense(5, activation='softmax'))
         
-        cnn.load_weights('C:/Users/Gopi Maguluri/Raag Identification and Understanding/FRIU/static/intrf/5cls_cnn.hdf5')
+        cnn.load_weights(os.path.join(config.INTERMEDIATE_FILES_FOLDER, '5cls_cnn.hdf5'))
         pred = cnn.predict(dat)
         
         p=[]

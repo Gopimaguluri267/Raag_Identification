@@ -6,51 +6,49 @@ import features
 import model
 import convertWAV
 from scipy.io.wavfile import write
+import config
+import logging
 
-# model 
+logging.basicConfig(level=logging.DEBUG)
+
 import numpy as np
 import tensorflow
 from keras.models import Sequential
 from keras.layers import Conv2D, MaxPool2D, Flatten, Dense, InputLayer, BatchNormalization, Dropout, GlobalAveragePooling2D
 from keras.callbacks import ModelCheckpoint
-import os
 import matplotlib.pyplot as plt
-import numpy as np
 from matplotlib import image
 import librosa
 import librosa.display
 
-#features
-import numpy as np 
-import matplotlib.pyplot as plt
 from pydub import AudioSegment
-import librosa
-import librosa.display
-import parselmouth
-
 
 rg = features.RaagAnalysis()
 rp = model.raag_pred()
 cwav = convertWAV.convert()
 
-upload_folder = "C:/Users/Gopi Maguluri/Raag Identification and Understanding/FRIU/static/uploads"
+app = Flask(__name__, static_folder='static')
+app.config['UPLOAD_FOLDER'] = config.UPLOAD_FOLDER
+app.config['MAX_CONTENT_LENGTH'] = config.MAX_CONTENT_LENGTH
+app.secret_key = config.SECRET_KEY
 
-app = Flask(__name__)
-app.config['UPLOAD_FOLDER'] = "C:/Users/Gopi Maguluri/Raag Identification and Understanding/FRIU/static/uploads"
-app.config['MAX_CONTENT_LENGTH'] = 20*1024*1024
-app.secret_key = 'gop!'
-
-allowed_extensions = set(['wav', 'mp3', 'm4a'])
 def allowed_file(filename):
-    return '.' in filename and filename.rsplit('.',1)[1].lower() in allowed_extensions
+    return '.' in filename and filename.rsplit('.',1)[1].lower() in config.ALLOWED_EXTENSIONS
 
+@app.route('/static/<path:filename>')
+def serve_static(filename):
+    return send_from_directory('static', filename)
 
+@app.route('/')
 @app.route('/home')
 def homescreen():
+    app.logger.debug('Accessing home page')
+    
     return render_template('riu.html')
 
 @app.route('/predictions', methods=['POST', 'GET'])
 def file_uploader():
+    app.logger.debug('Handling file upload')
     if 'file' not in request.files:
         flash('No file found')
         return render_template('riu.html')
@@ -63,59 +61,63 @@ def file_uploader():
     
     if file and allowed_file(file.filename):
         filename = secure_filename(file.filename)
-        file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
+        filepath = os.path.join(app.config['UPLOAD_FOLDER'], filename)
+        app.logger.debug(f'Saving file to: {filepath}')
+        file.save(filepath)
         flash('Audio uploaded successfully and the predictions are displayed')
-        rg.MelSpec_Pitch(os.path.join(app.config['UPLOAD_FOLDER'], filename))
-        raaga = rp.pred(os.path.join(app.config['UPLOAD_FOLDER'], filename))
-        # plots=[]
-        # for i in os.listdir(up_f):
-        #     if ((i[:-3])=='tempPlot') and ((i[-3:])=='jpg'):
-        #         plots.append(i)
+        rg.MelSpec_Pitch(filepath)
+        raaga = rp.pred(filepath)
         return render_template('results.html', raaga = raaga)
     
     else:
         flash('Allowed input formats: wav, mp3, m4a')
         return render_template('riu.html')
 
-
 @app.route('/exportrec', methods=['POST', 'GET'])
 def export_rec():
+    app.logger.debug('Handling recording export')
+    if 'file' not in request.files:
+        app.logger.error('No file part in the request')
+        flash('No file found')
+        return render_template('riu.html')
+    
     file = request.files['file']
+    if file.filename == '':
+        app.logger.error('No file selected')
+        flash('No file selected')
+        return render_template('riu.html')
+    
     filename = secure_filename(file.filename)
-    file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
-    cwav.to_wav(os.path.join(app.config['UPLOAD_FOLDER'], filename))
-    flash('Recording uploaded successfully. Press predict to get results')
-    return render_template('riu.html')
+    filepath = os.path.join(app.config['UPLOAD_FOLDER'], filename)
+    app.logger.debug(f'Saving recording to: {filepath}')
+    
+    try:
+        if os.path.exists(filepath):
+            os.remove(filepath)
+            app.logger.debug(f'Removed existing file: {filepath}')
+        
+        file.save(filepath)
+        app.logger.debug(f'Successfully saved file: {filepath}')
+        
+        cwav.to_wav(filepath)
+        app.logger.debug('File conversion completed')
+        
+        flash('Recording uploaded successfully. Press predict to get results')
+        return render_template('riu.html')
+    except Exception as e:
+        app.logger.error(f'Error processing file: {str(e)}')
+        flash('Error processing recording')
+        return render_template('riu.html')
 
 @app.route('/predictRec', methods=['POST', 'GET'])
 def predict_recording():
-    rg.MelSpec_Pitch('C:/Users/Gopi Maguluri/Raag Identification and Understanding/FRIU/static/uploads/new_sample.wav')
-    raaga = rp.pred('C:/Users/Gopi Maguluri/Raag Identification and Understanding/FRIU/static/uploads/new_sample.wav')
+    app.logger.debug('Predicting recording')
+    filepath = os.path.join(app.config['UPLOAD_FOLDER'], 'new_sample.wav')
+    rg.MelSpec_Pitch(filepath)
+    raaga = rp.pred(filepath)
     return render_template('results.html', raaga = raaga)
 
-
-#     try:
-#         print('Finallyy aage ethee.')
-#         print(request.form)
-#         print(request.files)
-#         if ('file' in request.form):
-#             file = request.files['file']
-#             filename = secure_filename(file.filename)
-#             directory = os.path.join(os.getcwd(), 'temp-data')
-#             # logging.info("[INFO] Object Recognition: Image file passed validations...")
-#             if not os.path.exists(directory):
-#                 os.makedirs(directory)
-#             file_save_path = os.path.join(directory, filename)
-#             file.save(file_save_path)
-#             print('file saved locally')
-#             file_save_path = 'C:/Users/Gopi Maguluri/Raag Identification and Understanding/FRIU/static/uploads'
-#             with open(file_save_path, "rb") as file:
-#                 b_str = base64.b64encode(file.read())
-#             return render_template('riu.html')
-#     except Exception as e:
-#         print('exception logged', e)
-
-
-
 if __name__=='__main__':
-    app.run(debug=True)
+    os.makedirs(app.config['UPLOAD_FOLDER'], exist_ok=True)
+    app.logger.debug(f"Upload folder: {app.config['UPLOAD_FOLDER']}")
+    app.run(debug=True, host='0.0.0.0', port=8000)

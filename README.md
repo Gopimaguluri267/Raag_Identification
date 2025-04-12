@@ -13,6 +13,16 @@ This application uses a Convolutional Neural Network (CNN) to classify audio int
 
 The system processes audio files to generate mel spectrograms and pitch contours, which are then used for classification.
 
+## Demo
+
+Here are some screenshots demonstrating the application:
+
+### Homepage
+![Homepage](demo/demo_page_1.png)
+
+### Results with Mel Spectrogram and Pitch Contour
+![Results](demo/demo_page_2.png)
+
 ## Features
 
 - Upload audio files (WAV, MP3, M4A)
